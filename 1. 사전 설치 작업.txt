@@ -1,0 +1,9 @@
+# 라이브러리 설치(두 PC 공통)
+sudo apt update
+sudo apt install python3-pip -y
+pip3 install google-cloud-firestore google-auth
+
+# 서비스 계정 키(JSON) 환경 변수 설정
+echo 'export GOOGLE_APPLICATION_CREDENTIALS="/home/ubuntu/firebase-key.json"' >> ~/.bashrc
+source ~/.bashrc
+

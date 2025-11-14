@@ -1,0 +1,4 @@
+# mainpc에서 데이터 확인
+# file_sync 컬렉션 → mainpc_test_file 문서에 content 필드가 들어간 걸 볼 수 있음.
+echo "hello from mainpc" > test.txt
+python3 mainpc_send.py
