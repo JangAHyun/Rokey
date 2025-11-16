@@ -5,10 +5,10 @@ import firebase_admin
 from firebase_admin import credentials, db
 
 # 1. 서비스 계정 키 JSON 절대 경로
-SERVICE_ACCOUNT_KEY_PATH = "/home/roeky/firebase/rokey-d198f-firebase-adminsdk-fbsvc-f417016fee.json"
+SERVICE_ACCOUNT_KEY_PATH = "/home/roeky/firebase/<firebase_Key>"
 
 # 2. Realtime Database URL (콘솔에서 복사한 그대로)
-DATABASE_URL = "https://rokey-d198f-default-rtdb.asia-southeast1.firebasedatabase.app"
+DATABASE_URL = "<URL>"
 
 # 3. mainpc에서 보낼 파일 경로
 LOCAL_FILE_PATH = "/home/roeky/firebase/test.txt"   # 실제 위치에 맞게 수정
