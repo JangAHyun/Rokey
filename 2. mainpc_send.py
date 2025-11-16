@@ -17,14 +17,14 @@ if not firebase_admin._apps:
     print("[INFO] Firebase 앱 초기화 완료")
 
 
-def update_dish_count(clean_dish: int):
+def update_dish_count(dish_cnt: int):
     """
     로봇이 접시를 옮길 때마다 이 함수를 호출해서
     Realtime DB에 현재 clean_dish 값을 저장.
     """
     # robot_status/completed_jobs 경로에 바로 값 쓰기
     ref_jobs = db.reference("robot_status/completed_jobs")
-    ref_jobs.set(clean_dish)
+    ref_jobs.set(dish_cnt)
 
     # (선택) 같은 /robot_status 아래에 타임스탬프도 함께 저장
     ref_root = db.reference("robot_status")
@@ -33,4 +33,4 @@ def update_dish_count(clean_dish: int):
         "from": "mainpc"
     })
 
-    print(f"[INFO] Firebase 업데이트: completed_jobs = {clean_dish}")
+    print(f"[INFO] Firebase 업데이트: completed_jobs = {dish_cnt}")
