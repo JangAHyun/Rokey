@@ -4,7 +4,7 @@ from firebase_admin import credentials
 from firebase_admin import db
 
 # 1. Firebase Admin SDK 초기화
-SERVICE_ACCOUNT_KEY_PATH = "<Firebase Key>" 
+SERVICE_ACCOUNT_KEY_PATH = "<Firebase Key>"  
 # 2. Realtime Database URL
 DATABASE_URL = "<Realtime Database URL>"
  
