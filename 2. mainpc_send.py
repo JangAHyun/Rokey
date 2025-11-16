@@ -1,52 +1,36 @@
-from datetime import datetime
-import os
-
+import time
 import firebase_admin
-from firebase_admin import credentials, db
+from firebase_admin import credentials
+from firebase_admin import db
 
-# 1. 서비스 계정 키 JSON 절대 경로
-SERVICE_ACCOUNT_KEY_PATH = "/home/roeky/firebase/<firebase_Key>"
-
-# 2. Realtime Database URL (콘솔에서 복사한 그대로)
-DATABASE_URL = "<URL>"
-
-# 3. mainpc에서 보낼 파일 경로
-LOCAL_FILE_PATH = "/home/roeky/firebase/test.txt"   # 실제 위치에 맞게 수정
-
-
-# Firebase Admin SDK 초기화
-try:
+# 1. Firebase Admin SDK 초기화
+SERVICE_ACCOUNT_KEY_PATH = "<Firebase Key>" 
+# 2. Realtime Database URL
+DATABASE_URL = "<Realtime Database URL>"
+ 
+# 3. Firebase Admin SDK 초기화 (여러 번 import 돼도 한 번만 초기화)
+if not firebase_admin._apps:
     cred = credentials.Certificate(SERVICE_ACCOUNT_KEY_PATH)
     firebase_admin.initialize_app(cred, {
         'databaseURL': DATABASE_URL
     })
     print("[INFO] Firebase 앱 초기화 완료")
-except ValueError:
-    print("[INFO] Firebase 앱이 이미 초기화되어 있습니다.")
 
 
-def send_file_to_realtimedb():
-    if not os.path.exists(LOCAL_FILE_PATH):
-        print(f"[ERROR] 파일을 찾을 수 없습니다: {LOCAL_FILE_PATH}")
-        return
+def update_dish_count(clean_dish: int):
+    """
+    로봇이 접시를 옮길 때마다 이 함수를 호출해서
+    Realtime DB에 현재 clean_dish 값을 저장.
+    """
+    # robot_status/completed_jobs 경로에 바로 값 쓰기
+    ref_jobs = db.reference("robot_status/completed_jobs")
+    ref_jobs.set(clean_dish)
 
-    with open(LOCAL_FILE_PATH, "r", encoding="utf-8") as f:
-        content = f.read()
+    # (선택) 같은 /robot_status 아래에 타임스탬프도 함께 저장
+    ref_root = db.reference("robot_status")
+    ref_root.update({
+        "last_update_timestamp": time.time(),
+        "from": "mainpc"
+    })
 
-    # Realtime DB 경로 지정
-    ref = db.reference("/robot_status")
-
-    ref.set(
-        {
-            "content": content,
-            "from": "mainpc",
-            "filename": LOCAL_FILE_PATH,
-            "updated_at": datetime.utcnow().isoformat(),
-        }
-    )
-
-    print("[INFO] Realtime Database에 데이터 전송 완료: /robot_status")
-
-
-if __name__ == "__main__":
-    send_file_to_realtimedb()
+    print(f"[INFO] Firebase 업데이트: completed_jobs = {clean_dish}")
