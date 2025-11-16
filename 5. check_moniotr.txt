@@ -1,3 +1,0 @@
-# 모니터링 PC에서 데이터 확인
-python3 monitor_recv.py
-cat received_test.txt
